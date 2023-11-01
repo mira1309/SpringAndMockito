@@ -7,57 +7,43 @@ import com.collection.hw1.exception.EmployeeNotFoundedException;
 import com.collection.hw1.exception.EmployeeStorageIsFullException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+
 @Service
 public class EmployeeService {
-    private static final int MAX_SIZE = 2;
-    private final List<Employee> employees = new ArrayList<>();
+    private final Map<String, Employee> employees;
+
+    public EmployeeService() {
+        employees = new HashMap<>();
+    }
 
     public Employee add(String firstName, String lastName) {
-
-        if (employees.size() > MAX_SIZE) {
-            throw new EmployeeStorageIsFullException("Массив сотрудников переполнен");
-        }
-
         Employee newEmployee = new Employee(firstName, lastName);
-        if (employees.contains(newEmployee)) {
+        if (employees.containsKey( newEmployee.getFullName())) {
             throw new EmployeeAlreadyAddedException("Такой сотрудник уже есть");
         }
-
-        employees.add(newEmployee);
+        employees.put(newEmployee.getFullName(), newEmployee);
         return newEmployee;
     }
 
     public Employee remove(String firstName, String lastName) {
         Employee employeeForRemove = new Employee(firstName, lastName);
-
-
-        if (!employees.contains(employeeForRemove)) {
+        if (!employees.containsKey(employeeForRemove.getFullName())) {
             throw new EmployeeNotFoundedException("Невозможно удалить, сотрудника не существует");
         }
-        employees.remove(employeeForRemove);
+        employees.remove(employeeForRemove.getFullName());
         return employeeForRemove;
     }
 
     public Employee get(String firstName, String lastName) {
         Employee employeeForSearch = new Employee(firstName, lastName);
-
-        if (!employees.contains(employeeForSearch)) {
+        if (!employees.containsKey(employeeForSearch.getFullName())) {
             throw new EmployeeNotFoundedException("Невозможно найти, сотрудника не существует");
         }
-
-            Employee result = null;
-            for (Employee employee : employees) {
-                if (employee.equals(employeeForSearch)) {
-                    return employee;
-                }
-            }
-            return result;
+        return employees.get(employeeForSearch.getFullName());
     }
-        public List<Employee> getAll() {
-           return employees;
+        public Collection<Employee> getAll() {
+           return Collections.unmodifiableCollection(employees.values());
         }
     }
 

@@ -4,6 +4,7 @@ import com.collection.hw1.Employee;
 import com.collection.hw1.service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -30,7 +31,7 @@ public class EmployeeController {
         return employeeService.get(firstName,lastName);
     }
     @GetMapping
-    public List<Employee> getAll(){
+    public Collection<Employee> getAll(){
         return employeeService.getAll();
     }
 }
