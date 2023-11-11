@@ -3,6 +3,7 @@ package com.collection.hw1.controller;
 import com.collection.hw1.Employee;
 import com.collection.hw1.service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpStatusCodeException;
 
 import java.util.Collection;
 import java.util.List;
@@ -10,6 +11,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
+    @ExceptionHandler({HttpStatusCodeException.class})
+    public String handleException(HttpStatusCodeException e) {
+        return "Code: " + e.getStatusCode() + ". Error: " +e.getMessage();
+    }
+
     @ExceptionHandler(RuntimeException.class)
     public String handleExceptoin(RuntimeException e) {
         return e.getMessage();

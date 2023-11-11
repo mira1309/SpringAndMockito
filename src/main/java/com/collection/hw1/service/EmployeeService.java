@@ -5,6 +5,7 @@ import com.collection.hw1.Employee;
 import com.collection.hw1.exception.EmployeeAlreadyAddedException;
 import com.collection.hw1.exception.EmployeeNotFoundedException;
 import com.collection.hw1.exception.EmployeeStorageIsFullException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -20,8 +21,19 @@ public class EmployeeService {
         add("Vova", "Putin");
         add("Sasha", "Ivanov");
     }
+    private final static int MAX_SIZE = 2;
 
     public Employee add(String firstName, String lastName) {
+
+        firstName = StringUtils.capitalize(firstName);
+        lastName = StringUtils.capitalize(lastName);
+
+        validateFirstAndLastNames (firstName, lastName);
+
+        if (employees.size() >= MAX_SIZE) {
+            throw new EmployeeStorageIsFullException("Массив сотрудников переполнен");
+        }
+
         Employee newEmployee = new Employee(firstName, lastName);
         if (employees.containsKey( newEmployee.getFullName())) {
             throw new EmployeeAlreadyAddedException("Такой сотрудник уже есть");
@@ -31,6 +43,12 @@ public class EmployeeService {
     }
 
     public Employee remove(String firstName, String lastName) {
+
+        firstName = StringUtils.capitalize(firstName);
+        lastName = StringUtils.capitalize(lastName);
+
+        validateFirstAndLastNames (firstName, lastName);
+
         Employee employeeForRemove = new Employee(firstName, lastName);
         if (!employees.containsKey(employeeForRemove.getFullName())) {
             throw new EmployeeNotFoundedException("Невозможно удалить, сотрудника не существует");
@@ -40,6 +58,12 @@ public class EmployeeService {
     }
 
     public Employee get(String firstName, String lastName) {
+
+        firstName = StringUtils.capitalize(firstName);
+        lastName = StringUtils.capitalize(lastName);
+
+        validateFirstAndLastNames (firstName, lastName);
+
         Employee employeeForSearch = new Employee(firstName, lastName);
         if (!employees.containsKey(employeeForSearch.getFullName())) {
             throw new EmployeeNotFoundedException("Невозможно найти, сотрудника не существует");
@@ -48,6 +72,11 @@ public class EmployeeService {
     }
         public Collection<Employee> getAll() {
            return Collections.unmodifiableCollection(employees.values());
+        }
+        private void validateFirstAndLastNames(String firstName, String lastName){
+        if(!StringUtils.isAlpha(firstName)){
+            throw new ValidationException(" Имя содержит запрещенные символы");
+        }
         }
     }
 
