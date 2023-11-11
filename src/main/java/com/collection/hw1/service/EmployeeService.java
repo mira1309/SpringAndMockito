@@ -14,7 +14,11 @@ public class EmployeeService {
     private final Map<String, Employee> employees;
 
     public EmployeeService() {
-        employees = new HashMap<>();
+        this.employees = new HashMap<>();
+        add("Ivan", "Kurochkin");
+        add("Mitya", "Petrov");
+        add("Vova", "Putin");
+        add("Sasha", "Ivanov");
     }
 
     public Employee add(String firstName, String lastName) {

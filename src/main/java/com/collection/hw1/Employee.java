@@ -1,18 +1,20 @@
 package com.collection.hw1;
 
 import java.util.Objects;
+import java.util.Random;
 
 public class Employee {
-    private String firstName;
-    private String lastName;
-    private int department;
-    private double salary;
+    private final String firstName;
+    private final String lastName;
+    private  int department;
+    private int salary;
 
-    public Employee(String firstName, String lastName, int department, double salary) {
+    public Employee(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.department = department;
-        this.salary = salary;
+        Random random = new Random();
+        this.department = random.nextInt(2)+1;
+        this.salary = random.nextInt(10000)+1000;
     }
 
     public String getFirstName() {
@@ -27,8 +29,12 @@ public class Employee {
         return department;
     }
 
-    public double getSalary() {
+    public int getSalary() {
         return salary;
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
     }
 
     @Override
