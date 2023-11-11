@@ -32,7 +32,7 @@ public class EmployeeService {
         validateFirstAndLastNames (firstName, lastName);
 
         if (employees.size() >= MAX_SIZE) {
-            throw new EmployeeStorageIsFullException("Массив сотрудников переполнен");
+            throw new  EmployeeStorageIsFullException("Массив сотрудников переполнен");
         }
 
         Employee newEmployee = new Employee(firstName, lastName);
