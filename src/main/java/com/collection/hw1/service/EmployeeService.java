@@ -17,14 +17,14 @@ public class EmployeeService {
 
     public EmployeeService() {
         this.employees = new HashMap<>();
-        add("Ivan", "Kurochkin");
-        add("Mitya", "Petrov");
-        add("Vova", "Putin");
-        add("Sasha", "Ivanov");
+        add("Ivan", "Kurochkin", 80000, 1);
+        add("Mitya", "Petrov", 90000, 2);
+        add("Vova", "Putin", 100000, 3);
+        add("Sasha", "Ivanov", 85000, 2);
     }
     private final static int MAX_SIZE = 2;
 
-    public Employee add(String firstName, String lastName) {
+    public Employee add(String firstName, String lastName, int salary, int departmentId) {
 
         firstName = StringUtils.capitalize(firstName);
         lastName = StringUtils.capitalize(lastName);
@@ -35,7 +35,7 @@ public class EmployeeService {
             throw new  EmployeeStorageIsFullException("Массив сотрудников переполнен");
         }
 
-        Employee newEmployee = new Employee(firstName, lastName);
+        Employee newEmployee = new Employee(firstName, lastName, salary, departmentId);
         if (employees.containsKey( newEmployee.getFullName())) {
             throw new EmployeeAlreadyAddedException("Такой сотрудник уже есть");
         }
@@ -43,14 +43,14 @@ public class EmployeeService {
         return newEmployee;
     }
 
-    public Employee remove(String firstName, String lastName) {
+    public Employee remove(String firstName, String lastName, int salary, int departmentId) {
 
         firstName = StringUtils.capitalize(firstName);
         lastName = StringUtils.capitalize(lastName);
 
         validateFirstAndLastNames (firstName, lastName);
 
-        Employee employeeForRemove = new Employee(firstName, lastName);
+        Employee employeeForRemove = new Employee(firstName, lastName, salary, departmentId);
         if (!employees.containsKey(employeeForRemove.getFullName())) {
             throw new EmployeeNotFoundedException("Невозможно удалить, сотрудника не существует");
         }
@@ -58,14 +58,14 @@ public class EmployeeService {
         return employeeForRemove;
     }
 
-    public Employee get(String firstName, String lastName) {
+    public Employee get(String firstName, String lastName, int salary, int departmentId) {
 
         firstName = StringUtils.capitalize(firstName);
         lastName = StringUtils.capitalize(lastName);
 
         validateFirstAndLastNames (firstName, lastName);
 
-        Employee employeeForSearch = new Employee(firstName, lastName);
+        Employee employeeForSearch = new Employee(firstName, lastName, salary, departmentId);
         if (!employees.containsKey(employeeForSearch.getFullName())) {
             throw new EmployeeNotFoundedException("Невозможно найти, сотрудника не существует");
         }

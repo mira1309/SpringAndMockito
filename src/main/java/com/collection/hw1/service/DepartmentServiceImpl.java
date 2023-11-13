@@ -20,7 +20,7 @@ public class DepartmentServiceImpl implements DepartmentService{
     public Employee getEmployeeWithMaxSalary(Integer departmentId){
         return employeeService.getAll()
                 .stream()
-                .filter(e -> e.getDepartment() == departmentId)
+                .filter(e -> e.getDepartmentId() == departmentId)
                 .max(Comparator.comparingInt(Employee::getSalary))
                 .orElseThrow(() -> new EmployeeNotFoundedException("Employee not found"));
     }
@@ -29,7 +29,7 @@ public class DepartmentServiceImpl implements DepartmentService{
 
         return employeeService.getAll()
                 .stream()
-                .filter(e -> e.getDepartment() == departmentId)
+                .filter(e -> e.getDepartmentId() == departmentId)
                 .min(Comparator.comparingInt(Employee ::getSalary))
                 .orElseThrow(() -> new EmployeeNotFoundedException("Employee not found"));
     }
@@ -37,7 +37,7 @@ public class DepartmentServiceImpl implements DepartmentService{
     public Collection<Employee> getEmployee(Integer departmentId) {
         return employeeService.getAll()
                 .stream()
-                .filter(e -> e.getDepartment() == departmentId)
+                .filter(e -> departmentId == null || e.getDepartmentId() == departmentId)
                 .collect(Collectors.toList());
     }
 
@@ -47,7 +47,7 @@ public class DepartmentServiceImpl implements DepartmentService{
     public Map<Integer, List<Employee>> getEmployee(){
         return employeeService.getAll()
                 .stream()
-                .collect(Collectors.groupingBy(Employee :: getDepartment));
+                .collect(Collectors.groupingBy(Employee :: getDepartmentId));
     }
 }
 

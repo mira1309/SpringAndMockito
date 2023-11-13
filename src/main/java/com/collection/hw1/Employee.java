@@ -6,15 +6,15 @@ import java.util.Random;
 public class Employee {
     private final String firstName;
     private final String lastName;
-    private  int department;
+    private  int departmentId;
     private int salary;
 
-    public Employee(String firstName, String lastName) {
+    public Employee(String firstName, String lastName, int salary, int departmentId) {
         this.firstName = firstName;
         this.lastName = lastName;
-        Random random = new Random();
-        this.department = random.nextInt(2)+1;
-        this.salary = random.nextInt(10000)+1000;
+        this.salary = salary;
+        this.departmentId = departmentId;
+
     }
 
     public String getFirstName() {
@@ -25,8 +25,8 @@ public class Employee {
         return lastName;
     }
 
-    public int getDepartment() {
-        return department;
+    public int getDepartmentId() {
+        return departmentId;
     }
 
     public int getSalary() {
@@ -42,12 +42,12 @@ public class Employee {
         if (this == o) return true;
         if (!(o instanceof Employee)) return false;
         Employee employee = (Employee) o;
-        return department == employee.department && Double.compare(salary, employee.salary) == 0 && Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName);
+        return departmentId == employee.departmentId && Double.compare(salary, employee.salary) == 0 && Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, department, salary);
+        return Objects.hash(firstName, lastName, departmentId, salary);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class Employee {
         return "Employee{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", department=" + department +
+                ", department=" + departmentId +
                 ", salary=" + salary +
                 '}';
     }
