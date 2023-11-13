@@ -34,7 +34,7 @@ public class DepartmentServiceImpl implements DepartmentService{
                 .orElseThrow(() -> new EmployeeNotFoundedException("Employee not found"));
     }
     @Override
-    public Collection<Employee> getEmployee (Integer departmentId) {
+    public Collection<Employee> getEmployee(Integer departmentId) {
         return employeeService.getAll()
                 .stream()
                 .filter(e -> e.getDepartment() == departmentId)
