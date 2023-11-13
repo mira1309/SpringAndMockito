@@ -20,7 +20,7 @@ public class EmployeeService {
         add("Ivan", "Kurochkin", 80000, 1);
         add("Mitya", "Petrov", 90000, 2);
         add("Vova", "Putin", 100000, 3);
-        add("Sasha", "Ivanov", 85000, 2);
+
     }
     private final static int MAX_SIZE = 2;
 
