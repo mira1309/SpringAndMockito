@@ -2,10 +2,9 @@ package com.collection.hw1.controller;
 
 import com.collection.hw1.Employee;
 import com.collection.hw1.service.DepartmentService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.collection.hw1.service.DepartmentServiceImpl;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpStatusCodeException;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,25 +14,29 @@ import java.util.Map;
 @RequestMapping("/departments")
 public class DepartmentController {
 
-    private final DepartmentService departmentService;
+    @ExceptionHandler({HttpStatusCodeException.class})
+    public String handleException(HttpStatusCodeException e) {
+        return "Code: " + e.getStatusCode() + ". Error: " + e.getMessage();
+    }
 
-    public DepartmentController (DepartmentService departmentService) {
-        this.departmentService = departmentService;
+    private final DepartmentServiceImpl departmentServiceImpl;
+
+    public DepartmentController(DepartmentServiceImpl departmentServiceImpl) {
+        this.departmentServiceImpl = departmentServiceImpl;
     }
+
     @GetMapping("/max-salary")
-    public Employee getEmployeeWithMaxSalary(@RequestParam Integer departmentId){
-        return departmentService.getEmployeeWithMaxSalary(departmentId);
+    public Employee getEmployeeWithMaxSalary(@RequestParam Integer departmentId) {
+        return departmentServiceImpl.getEmployeeWithMaxSalary(departmentId);
     }
+
     @GetMapping("/min-salary")
     public Employee getEmployeeWithMinSalary(@RequestParam Integer departmentId) {
-        return departmentService.getEmployeeWithMinSalary(departmentId);
+        return departmentServiceImpl.getEmployeeWithMinSalary(departmentId);
     }
-    @GetMapping(value = "/all", params = {"departmentId"})
-    public Collection<Employee> getEmployees(@RequestParam Integer departmentId){
-        return departmentService.getEmployee(departmentId);
-    }
+
     @GetMapping("/all")
-    public Map<Integer, List<Employee>> getEmployees(){
-        return departmentService.getEmployee();
+    public Map<Integer, List<Employee>> getEmployeesByDepartment(@RequestParam(required = false) Integer departmentId) {
+        return departmentServiceImpl.getEmployeesByDepartment(departmentId);
     }
 }

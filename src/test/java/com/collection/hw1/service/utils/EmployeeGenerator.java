@@ -22,7 +22,12 @@ public class EmployeeGenerator {
 
     public static final int SECOND_DEPARTMENT_ID = 2;
 
+    public static Employee getEmployeeIsEmpty(){
+        return null;
+    }
+
     public static Employee getEmployee() {
+
         return new Employee(FIRST_NAME, LAST_NAME, SALARY, FIRST_DEPARTMENT_ID);
     }
 

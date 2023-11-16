@@ -11,33 +11,35 @@ import java.util.List;
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
+
     @ExceptionHandler({HttpStatusCodeException.class})
     public String handleException(HttpStatusCodeException e) {
-        return "Code: " + e.getStatusCode() + ". Error: " +e.getMessage();
+        return "Code: " + e.getStatusCode() + ". Error: " + e.getMessage();
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public String handleExceptoin(RuntimeException e) {
-        return e.getMessage();
-    }
     private final EmployeeService employeeService;
+
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
+
     @GetMapping("/add")
-    public Employee add(@RequestParam String firstName, @RequestParam String lastName, @RequestParam int salary, @RequestParam Integer departmentId) {
-        return employeeService.add(firstName,lastName, salary, departmentId);
+    public Employee add(@RequestParam String firstName, @RequestParam String lastName, @RequestParam double salary, @RequestParam Integer departmentId) {
+        return employeeService.add(firstName, lastName, salary, departmentId);
     }
+
+    @GetMapping("/find")
+    public Employee find(@RequestParam String firstName, @RequestParam String lastName, @RequestParam double salary, @RequestParam Integer departmentId) {
+        return employeeService.find(firstName, lastName, salary, departmentId);
+    }
+
     @GetMapping("/remove")
-    public Employee remove(@RequestParam String firstName, @RequestParam String lastName, @RequestParam int salary, @RequestParam Integer departmentId) {
-        return employeeService.remove(firstName,lastName, salary, departmentId);
+    public Employee remove(@RequestParam String firstName, @RequestParam String lastName, @RequestParam double salary, @RequestParam Integer departmentId) {
+        return employeeService.remove(firstName, lastName, salary, departmentId);
     }
-    @GetMapping("/get")
-    public Employee get(@RequestParam String firstName, @RequestParam String lastName, @RequestParam int salary, @RequestParam Integer departmentId) {
-        return employeeService.get(firstName,lastName, salary, departmentId);
-    }
+
     @GetMapping
-    public Collection<Employee> getAll(){
+    public List<Employee> getAll() {
         return employeeService.getAll();
     }
 }
