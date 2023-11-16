@@ -20,8 +20,7 @@ class DepartmentServiceImplTest {
     private EmployeeService employeeService;
 
     @InjectMocks
-    private DepartmentService departmentService;
-
+    private DepartmentServiceImpl departmentServiceImpl;
     @Test
     void getEmployeeWithMaxSalary_success() {
         Integer departmentId = FIRST_DEPARTMENT_ID;
@@ -30,7 +29,7 @@ class DepartmentServiceImplTest {
 
         Employee expectedEmployee = getEmployee();
 
-        Employee actualEmployee = departmentService.getEmployeeWithMaxSalary(departmentId);
+        Employee actualEmployee = departmentServiceImpl.getEmployeeWithMaxSalary(departmentId);
         assertEquals(expectedEmployee, actualEmployee);
         assertTrue(getEmployee().getSalary() > getEmployee2().getSalary());
     }
@@ -45,7 +44,7 @@ class DepartmentServiceImplTest {
 
         Exception exception = assertThrows(
                 EmployeeNotFoundedException.class,
-                () -> departmentService.getEmployeeWithMaxSalary(departmentId)
+                () -> departmentServiceImpl.getEmployeeWithMaxSalary(departmentId)
         );
         assertEquals(expectedMessage, exception.getMessage());
     }
@@ -61,7 +60,7 @@ class DepartmentServiceImplTest {
         Employee expectedEmployee = getEmployee2();
 
         //Начало теста
-        Employee actualEmployee = departmentService.getEmployeeWithMinSalary(departmentId);
+        Employee actualEmployee = departmentServiceImpl.getEmployeeWithMinSalary(departmentId);
         assertEquals(expectedEmployee, actualEmployee);
         assertTrue(getEmployee().getSalary() > getEmployee2().getSalary());
     }
@@ -78,7 +77,7 @@ class DepartmentServiceImplTest {
         //Начало теста
         Exception exception = assertThrows(
                 EmployeeNotFoundedException.class,
-                () -> departmentService.getEmployeeWithMinSalary(departmentId)
+                () -> departmentServiceImpl.getEmployeeWithMinSalary(departmentId)
         );
         assertEquals(expectedMessage, exception.getMessage());
     }
@@ -96,7 +95,7 @@ class DepartmentServiceImplTest {
         expectedMap.put(FIRST_DEPARTMENT_ID, Arrays.asList(getEmployee(), getEmployee2()));
 
         //Начало теста
-        Collection<Employee> actualMap = departmentService.getEmployee(departmentId);
+        Collection<Employee> actualMap = departmentServiceImpl.getEmployee(departmentId);
         assertEquals(expectedMap, actualMap);
         assertEquals(getEmployee().getDepartmentId(), getEmployee2().getDepartmentId());
         assertNotEquals(getEmployee().getDepartmentId(), getEmployee3().getDepartmentId());
@@ -114,7 +113,7 @@ class DepartmentServiceImplTest {
         expectedMap.put(FIRST_DEPARTMENT_ID, Arrays.asList(getEmployee(), getEmployee2()));
         expectedMap.put(SECOND_DEPARTMENT_ID, Collections.singletonList(getEmployee3()));
 
-        Collection<Employee> actualMap = departmentService.getEmployee(departmentId);
+        Collection<Employee> actualMap = departmentServiceImpl.getEmployee(departmentId);
         assertEquals(expectedMap, actualMap);
         assertEquals(getEmployee().getDepartmentId(), getEmployee2().getDepartmentId());
         assertNotEquals(getEmployee().getDepartmentId(), getEmployee3().getDepartmentId());

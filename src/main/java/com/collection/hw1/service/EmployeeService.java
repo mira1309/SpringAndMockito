@@ -17,11 +17,8 @@ public class EmployeeService {
 
     public EmployeeService() {
         this.employees = new HashMap<>();
-        add("Ivan", "Kurochkin", 80000, 1);
-        add("Mitya", "Petrov", 90000, 2);
-        add("Vova", "Putin", 100000, 3);
-
     }
+
     private final static int MAX_SIZE = 2;
 
     public Employee add(String firstName, String lastName, int salary, int departmentId) {
