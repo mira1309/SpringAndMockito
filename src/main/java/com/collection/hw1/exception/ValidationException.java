@@ -6,7 +6,8 @@ import org.springframework.web.client.HttpStatusCodeException;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class ValidationException extends HttpStatusCodeException {
-    public ValidationException (String massage) {
-        super(HttpStatus.BAD_REQUEST,massage);
+
+    public ValidationException(String message) {
+        super(HttpStatus.BAD_REQUEST, message);
     }
 }

@@ -1,7 +1,7 @@
 package com.collection.hw1.service;
 
 import com.collection.hw1.Employee;
-import com.collection.hw1.exception.EmployeeNotFoundedException;
+import com.collection.hw1.exception.EmployeeNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -10,44 +10,36 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+
 @Service
-public class DepartmentServiceImpl implements DepartmentService{
+public class DepartmentServiceImpl {
+
     private final EmployeeService employeeService;
+
     public DepartmentServiceImpl(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
-    @Override
-    public Employee getEmployeeWithMaxSalary(Integer departmentId){
-        return employeeService.getAll()
-                .stream()
-                .filter(e -> e.getDepartment() == departmentId)
-                .max(Comparator.comparingInt(Employee::getSalary))
-                .orElseThrow(() -> new EmployeeNotFoundedException("Employee not found"));
-    }
-    @Override
-    public Employee getEmployeeWithMinSalary (Integer departmentId) {
 
-        return employeeService.getAll()
-                .stream()
-                .filter(e -> e.getDepartment() == departmentId)
-                .min(Comparator.comparingInt(Employee ::getSalary))
-                .orElseThrow(() -> new EmployeeNotFoundedException("Employee not found"));
-    }
-    @Override
-    public Collection<Employee> getEmployee(Integer departmentId) {
-        return employeeService.getAll()
-                .stream()
-                .filter(e -> e.getDepartment() == departmentId)
-                .collect(Collectors.toList());
+    public Employee getEmployeeWithMaxSalary(Integer departmentId) {
+        return employeeService.getAll().stream()
+                .filter(employee -> employee.getDepartmentId() == departmentId)
+                .max(Comparator.comparing(Employee::getSalary))
+                .orElseThrow(() -> new EmployeeNotFoundException("Сотрудник с максимальной зарплатой не найден"));
     }
 
+    public Employee getEmployeeWithMinSalary(Integer departmentId) {
+        return employeeService.getAll().stream()
+                .filter(employee -> employee.getDepartmentId() == departmentId)
+                .min(Comparator.comparing(Employee::getSalary))
+                .orElseThrow(() -> new EmployeeNotFoundException("Сотрудник с минимальной зарплатой не найден"));
+    }
 
-
-    @Override
-    public Map<Integer, List<Employee>> getEmployee(){
-        return employeeService.getAll()
-                .stream()
-                .collect(Collectors.groupingBy(Employee :: getDepartment));
+    public Map<Integer, List<Employee>> getEmployeesByDepartment(Integer departmentId) {
+        return employeeService.getAll().stream()
+                .filter(e -> departmentId == null || e.getDepartmentId() == departmentId)
+                .collect(groupingBy(Employee::getDepartmentId, toList()));
     }
 }
 
