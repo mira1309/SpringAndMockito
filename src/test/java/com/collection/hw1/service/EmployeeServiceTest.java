@@ -3,6 +3,7 @@ package com.collection.hw1.service;
 import com.collection.hw1.Employee;
 
 import com.collection.hw1.exception.EmployeeAlreadyAddedException;
+import com.collection.hw1.exception.EmployeeNotFoundException;
 import com.collection.hw1.exception.EmployeeStorageIsFullException;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.Assert;
@@ -84,25 +85,73 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void find() {
-
-    }
-
-    @Test
-    void remove_success() {
-         int departmentId = FIRST_DEPARTMENT_ID;
+    void find_success() {
+        String firstName = FIRST_NAME;
+        String lastName = LAST_NAME;
+        double salary = SALARY;
+        int departmentId = FIRST_DEPARTMENT_ID;
 
         String firstName2 = FIRST_NAME_2;
         String lastName2 = LAST_NAME_2;
         double salary2 = SALARY_2;
 
-        Employee expectedEmployee = getEmployeeIsEmpty();
+        Employee expectedEmployee = getEmployee2();
+        employeeService.add(firstName2, lastName2, salary2,departmentId);
 
-        Employee actualEmployee = employeeService.remove(firstName2, lastName2, salary2, departmentId);
+        Employee actualEmployee = employeeService.find("IvanSecond", "IvanovSecond", 10000, 1);
+
         assertEquals(expectedEmployee, actualEmployee);
+    }
+    @Test
+    void find_withEmployeeNotFoundException(){
+        String firstName = FIRST_NAME;
+        String lastName = LAST_NAME;
+        double salary = SALARY;
+        int departmentId = FIRST_DEPARTMENT_ID;
 
+        String expectedMessage = "404 Такого сотрудника нет";
+
+        Exception exception = assertThrows(
+                EmployeeNotFoundException.class,
+                () -> employeeService.find(firstName, lastName, salary, departmentId)
+        );
+        assertEquals(expectedMessage, exception.getMessage());
     }
 
+    @Test
+    void remove_success() {
+        String firstName2 = FIRST_NAME_2;
+        String lastName2 = LAST_NAME_2;
+        double salary2 = SALARY_2;
+
+        String firstName = FIRST_NAME;
+        String lastName = LAST_NAME;
+        double salary = SALARY;
+        int departmentId = FIRST_DEPARTMENT_ID;
+
+        employeeService.add(firstName, lastName, salary, departmentId);
+        employeeService.add(firstName2, lastName2, salary2, departmentId);
+
+        Employee expectedEmployee = getEmployee();
+
+        Employee actualEmployee = employeeService.remove(firstName, lastName, salary, departmentId);
+        assertEquals(expectedEmployee, actualEmployee);
+    }
+    @Test
+    void remove_withEmployeeNotFoundException(){
+        String firstName = FIRST_NAME;
+        String lastName = LAST_NAME;
+        double salary = SALARY;
+        int departmentId = FIRST_DEPARTMENT_ID;
+
+        String expectedMessage = "404 Сотрудник не удален - не был найден в базе";
+
+        Exception exception = assertThrows(
+                EmployeeNotFoundException.class,
+                () -> employeeService.remove(firstName, lastName, salary, departmentId)
+        );
+        assertEquals(expectedMessage, exception.getMessage());
+    }
     @Test
     void getAll_succes() {
         String firstName = FIRST_NAME;
@@ -125,11 +174,6 @@ class EmployeeServiceTest {
         actualEmployee.add(getEmployee2());
         actualEmployee.add(getEmployee3());
 
-
-
         assertEquals(expectedEmployee, actualEmployee);
-
-
-
     }
 }

@@ -42,4 +42,7 @@ public class EmployeeGenerator {
     public static List<Employee> getAllEmployee() {
         return Arrays.asList(getEmployee(), getEmployee2(), getEmployee3());
     }
+    public static Employee employeeForFound(boolean equals) {
+        return new Employee(FIRST_NAME, LAST_NAME, SALARY, FIRST_DEPARTMENT_ID);
+    }
 }

@@ -58,6 +58,7 @@ public class EmployeeService {
         lastName = StringUtils.capitalize(lastName);
 
         validateFirstAndLastNames(firstName, lastName);
+
         Employee employeeForRemove = new Employee(firstName, lastName, salary, departmentId);
 
         boolean removeResult = employees.remove(employeeForRemove);
